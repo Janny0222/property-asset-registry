@@ -20,15 +20,12 @@ import EditPermitModal from '../Modals/Permits/EditPermitModal'
 const permitTableHead: TableColumn[] = [
   { key: 'company_plant', label: 'Company Plant' },
   { key: 'permit_type', label: 'Type of Permit' },
-  { key: 'requirement', label: 'Requirement'},
   { key: 'frequency', label: 'Frequency'},
   { key: 'in_charge', label: 'In-Charge'},
   { key: 'contact_no', label: 'Contact No.'},
   { key: 'permit_no', label: 'Permit No.'},
   { key: 'permit_date', label: 'Permit Date'},
   { key: 'renewal', label: 'Renewal'},
-  { key: 'permit_conditions', label: 'Permit Conditions'},
-  { key: 'recomendation', label: 'Recomendation'},
   { key: 'action', label: 'Actions'},
 ]
 const Text = 'text-sm text-center items-center justify-center whitespace-nowrap m-3 px-3 py-2';
@@ -78,15 +75,12 @@ const PermitsComponent = () => {
         <>
             <td className={`${Text} `}>{ companyPlant.find((company) => company.id === data.company_plant)?.name }</td>
             <td className={`${Text} `}>{data.permit_type}</td>
-            <td className={`${Text} `}>{data.requirement}</td>
             <td className={`${Text} `}>{data.frequency}</td>
             <td className={`${Text} `}>{data.in_charge}</td>
             <td className={`${Text} `}>{data.contact_no}</td>
             <td className={`${Text} `}>{data.permit_no}</td>
             <td className={`${Text} `}>{data.permit_date}</td>
             <td className={`${Text} `}>{data.renewal}</td>
-            <td className={`${Text} `}>{data.permit_conditions}</td>
-            <td className={`${Text} `}>{data.recomendation}</td>
             <td className={`${Text} flex gap-2`}>
                 <button type='button' onClick={() => handleEdit(data?.id!)} className='p-1 border rounded-sm text-green-800'><MdModeEdit /></button>
                 <button className='p-1 border rounded-sm text-red-500'><FaTrash/></button>
