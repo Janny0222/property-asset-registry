@@ -9,7 +9,7 @@ import { GovernmentPermitProps } from '@/types/modelProps'
 import { createGovernmentAgency } from '@/services/governmentAgencyServices'
 import { useGovernmentPermitStore } from '@/stores/govenmentAgencyStore'
 
-const AddGovernmentAgency = ({ modalOpen, setModalOpen }: ChildrenModalProps) => {
+const AddGovernmentAgencyModal = ({ modalOpen, setModalOpen }: ChildrenModalProps) => {
     const { fetchAllGovernmentAgency } = useGovernmentPermitStore()
     const [error, setError] = useState<string>('');
     const [formData, setFormData] = useState<GovernmentPermitProps>({});
@@ -63,4 +63,4 @@ const AddGovernmentAgency = ({ modalOpen, setModalOpen }: ChildrenModalProps) =>
   )
 }
 
-export default AddGovernmentAgency
+export default AddGovernmentAgencyModal

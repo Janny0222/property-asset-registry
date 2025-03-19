@@ -9,16 +9,17 @@ import { CommonButton } from '../ui/Forms/UserButton';
 import Table from '../ui/CustomUI/Table';
 import { FaEdit } from 'react-icons/fa';
 import { useGovernmentPermitStore } from '@/stores/govenmentAgencyStore';
-import AddGovernmentPermitModal from '../Modals/GovernmentAgency/AddGovernmentAgency';
+import AddGovernmentAgencyModal from '../Modals/GovernmentAgency/AddGovernmentAgency';
 
 const Text = 'text-sm text-center items-center justify-center whitespace-nowrap px-3 py-2';
 
-const GovernmentPermitListComponent = () => {
+const GovernmentAgencyListComponent = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const { fetchAllGovernmentAgency, governmentAgency } = useGovernmentPermitStore();
     const tableHead: TableColumn[] = [
         { key: 'id', label: 'ID'},
-        { key: 'name', label: 'Name'}
+        { key: 'name', label: 'Name'},
+        { key: 'action', label: 'Action'}
     ]
 
     const handleAddGovernmentPermit = () => {
@@ -29,7 +30,7 @@ const GovernmentPermitListComponent = () => {
     }, [fetchAllGovernmentAgency])
     return (
     <>
-    <AddGovernmentPermitModal modalOpen={modalOpen} setModalOpen={() => setModalOpen(false)} />
+    <AddGovernmentAgencyModal modalOpen={modalOpen} setModalOpen={() => setModalOpen(false)} />
         <div className='bg-gray-100 p-5'>
             <div className='p-5 w-full'>
                 <div className='text-md'>
@@ -41,7 +42,7 @@ const GovernmentPermitListComponent = () => {
                             <MdOutlineKeyboardArrowRight className='w-6 h-6' />
                         <div className='flex gap-1'>
                             <FaLocationDot className='w-5 h-5' />
-                            <span>Government Permit List</span>
+                            <span>Government Agency List</span>
                         </div>
                     </div>
                 </div>
@@ -75,4 +76,4 @@ const GovernmentPermitListComponent = () => {
     )
 }
 
-export default GovernmentPermitListComponent
+export default GovernmentAgencyListComponent

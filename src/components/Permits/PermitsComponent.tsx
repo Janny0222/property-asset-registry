@@ -29,8 +29,9 @@ const permitTableHead: TableColumn[] = [
   { key: 'renewal', label: 'Renewal'},
   { key: 'permit_conditions', label: 'Permit Conditions'},
   { key: 'recomendation', label: 'Recomendation'},
+  { key: 'action', label: 'Actions'},
 ]
-const Text = 'text-sm text-center items-center justify-center whitespace-nowrap px-3 py-2';
+const Text = 'text-sm text-center items-center justify-center whitespace-nowrap m-3 px-3 py-2';
 
 
 const PermitsComponent = () => {
@@ -123,7 +124,7 @@ const PermitsComponent = () => {
             </div>
         </div>
         <div className='px-5 mt-5 w-auto'>
-            <Table tableHead={permitTableHead} rowData={permit} rowRender={rowRender} />
+            <Table tableHead={permitTableHead} rowData={permit} rowRender={rowRender} bgColor='bg-white' />
         </div>
     </>
   )

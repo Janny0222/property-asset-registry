@@ -16,7 +16,8 @@ const LocationListComponents = () => {
     const { locations } = useLocationStore();
     const tableHead: TableColumn[] = [
         { key: 'id', label: 'ID'},
-        { key: 'name', label: 'Name'}
+        { key: 'name', label: 'Name'},
+        { key: 'Action', label: 'Action'},
     ]
 const Text = 'text-sm text-center items-center justify-center whitespace-nowrap px-3 py-2';
     const handleAddLocation = () => {

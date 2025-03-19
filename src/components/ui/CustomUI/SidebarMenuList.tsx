@@ -132,9 +132,9 @@ const SidebarMenuList = () => {
               Company Plant
             </div>
           </Link>
-          <Link href={'/maintenance/government-permit'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/government-permit' ? 'bg-fontColor bg-opacity-50' : ''}`}>
+          <Link href={'/maintenance/government-agency'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/government-permit' ? 'bg-fontColor bg-opacity-50' : ''}`}>
             <div className='w-full ml-8'>
-              Government permits
+              Government Agency
             </div>
           </Link>
           <Link href={'/maintenance/tabular-color'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/tabular-color' ? 'bg-fontColor bg-opacity-50' : ''}`}>

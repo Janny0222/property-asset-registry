@@ -5,7 +5,6 @@ export async function POST() {
     try {
         const accessTokenCooke = serialize("auth_token", "", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 0,
             path: "/",
@@ -13,7 +12,6 @@ export async function POST() {
 
         const refreshTokenCookie = serialize("refresh_token", "", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 0,
             path: "/",

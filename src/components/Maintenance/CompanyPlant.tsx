@@ -15,7 +15,8 @@ const CompanyPlantComponent = () => {
     const {  companyPlant } = useCompanyPlantStore();
     const tableHead: TableColumn[] = [
         { key: 'id', label: 'ID'},
-        { key: 'name', label: 'Name'}
+        { key: 'name', label: 'Name'},
+        { key: 'action', label: 'Action'},
     ]
 
     const handleAddGovernmentPermit = () => {
