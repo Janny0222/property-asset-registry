@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UploadFileModel } from '@/models/UploadFileModel';
 
-export async function GET(req: NextRequest, { params }: { params: { entityId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ entityId: string }> }) {
   try {
+    const getParams = await params;
+    const entity_id = getParams.entityId;
     const file = await UploadFileModel.findOne({
-      where: { entityId: Number(params.entityId) },
+      where: { entityId: Number(entity_id) },
     });
 
     if (!file) {
