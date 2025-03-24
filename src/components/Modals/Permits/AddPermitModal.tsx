@@ -14,9 +14,15 @@ import { usePermitStore } from '@/stores/permitStore'
 const AddPermitModal = ({ modalOpen, setModalOpen }: ModalProps) => {
     const [formData, setFormData] = useState<PermitProps>({})
     const { governmentAgency } = useGovernmentPermitStore()
-    const { fetchAllPermit } = usePermitStore()
-    const { specificCompanyPlant, companyPlant } = useCompanyPlantStore()
+    const { fetchAllPermitByGovernmentAgency } = usePermitStore()
+    const [companyPlantId, setCompanyPlantId] = useState<number>(0)
+    const { companyPlant } = useCompanyPlantStore()
     const params = useParams()
+
+    const companyList: Option[] = companyPlant.map((company) => ({
+        value: company?.id!,
+        title: company?.name!
+    }))
 
     const calculateRenewalDate = (permitDate: string, frequency: string) => {
         if (!permitDate) return '';
@@ -44,6 +50,9 @@ const AddPermitModal = ({ modalOpen, setModalOpen }: ModalProps) => {
 
         setFormData(updatedFormData);
     };
+    const handleSelectChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCompanyPlantId(Number(e.target.value) );
+    }
     const frequencyOptions: Option[] = [
         { value: 'Annual', title: 'Annual' },
         { value: 'One-Time', title: 'One-Time' },
@@ -60,11 +69,11 @@ const AddPermitModal = ({ modalOpen, setModalOpen }: ModalProps) => {
         try {
             const newFormData = {
                 ...formData,
-                company_plant: specificCompanyPlant?.id,
+                company_plant: companyPlantId,
                 government_agency: Number(params?.name)
             }
             const response = await createPermit(newFormData)
-            fetchAllPermit()
+            fetchAllPermitByGovernmentAgency(params.name?.toString()!)
             setFormData({})
             setModalOpen(false)
         } catch  (error) {
@@ -80,7 +89,7 @@ const AddPermitModal = ({ modalOpen, setModalOpen }: ModalProps) => {
               <div className='w-full border relative'></div>
             <form onSubmit={handleSubmit} className='grid grid-cols-6 gap-6 text-left mt-6'>
                 <div className='col-span-2 text-white'>
-                    <Input disabled fontColor='text-white'  value={specificCompanyPlant?.name || ''} label={'Company Plant'} placeholder="Company Plant" type="text"  onChange={handleChange} />
+                    <Select label='Select Company Plant' name='company_plant' onChange={handleSelectChange} value={companyPlantId} selection_name={'Select Company Plant'} options={companyList} />
                 </div>
                 <div className='col-span-2 text-white'>
                     <Input disabled fontColor='text-white' name='' value={permit || ''} label={'Government Agency'} placeholder="Government Agency" type="text"  onChange={handleChange} />

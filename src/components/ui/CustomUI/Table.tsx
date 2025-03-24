@@ -15,7 +15,7 @@ const Rows = <T extends object>({data, i, rowRenderer}: { data: T; i: number; ro
 };
 const Table =<T extends object> ({ tableHead, rowData, rowRender, bgColor }: TableProps<T>) => {
   return (
-    <div className="overflow-x-scroll overflow-hidden relative w-full" >
+    <div className="overflow-x-scroll relative w-full" >
       <table className="w-full  table-auto border rounded-lg border-lightColor divide-y divide-border">
         <thead className='rounded-md'>
           <tr className="bg-fontColor border ">

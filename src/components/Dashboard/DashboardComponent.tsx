@@ -28,10 +28,11 @@ const permitTableHead: TableColumn[] = [
   { key: 'renewal', label: 'Renewal'},
 ]
 
+
 const Text = 'text-sm text-center items-center justify-center whitespace-nowrap px-3 py-2';
 const DashboardComponents = () => {
   const { property } = usePropertyStore()
-  const { permit, fetchAllPermitForRenewal, permitForRenewal } = usePermitStore()
+  const { fetchAllPermitForRenewal, permitForRenewal } = usePermitStore()
   const { locations } = useLocationStore()
   const { companyPlant } = useCompanyPlantStore()
   const router = useRouter();

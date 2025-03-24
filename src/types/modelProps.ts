@@ -44,4 +44,11 @@ export interface PermitProps {
     renewal?: string;
     permit_conditions?: string;
     recomendation?: string;
+    filename?: string;
+}
+
+export interface FilesProps {
+    id?: number;
+    filename?: string
+    entityId?: number;
 }

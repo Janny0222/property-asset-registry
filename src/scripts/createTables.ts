@@ -1,3 +1,4 @@
+import { UploadFileModel } from '@/models/UploadFileModel';
 import { syncDatabase } from "@/lib/db";
 import { UserModel } from "@/models/UserModel";
 import { LocationModel } from "@/models/LocationModel";
@@ -14,6 +15,7 @@ const createTables = async () => {
         await GovernmentAgencyModel.sync({alter: true});
         await CompanyPlantModel.sync({ alter: true });
         await PermitModel.sync({ alter: true });
+        await UploadFileModel.sync({ alter: true})
         console.log("All models were synchronized successfully.");
         process.exit(0);
     } catch (error: any) {

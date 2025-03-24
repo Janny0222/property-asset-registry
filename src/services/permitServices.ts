@@ -6,7 +6,7 @@ export const getAllPermits = async (): Promise<PermitProps[]> => {
     return data
 }
 
-export const getAllByGovernmentAgency = async (government_agency: number): Promise<PermitProps[]> => {
+export const getAllByGovernmentAgency = async (government_agency: string): Promise<PermitProps[]> => {
     const { data } = await axios.get<PermitProps[]>(`/api/permit/${government_agency}`);
     return data
 }

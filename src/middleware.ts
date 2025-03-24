@@ -46,9 +46,9 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/dashboard', request.url));
         }
     } 
-        if (!token && pathname !== "/login") {
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
+    if (!token && pathname !== "/login") {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
         
     
        
@@ -57,5 +57,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/login","/dashboard", "/", "/dashboard/:path*", "/maintenance/:path*"],
+    matcher: ["/login","/dashboard", "/", "/dashboard/:path*", "/maintenance/:path*", "/permits/:id"],
 }

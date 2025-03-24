@@ -28,7 +28,7 @@ const permitTableHead: TableColumn[] = [
   { key: 'renewal', label: 'Renewal'},
   { key: 'action', label: 'Actions'},
 ]
-const Text = 'text-sm text-center items-center justify-center whitespace-nowrap m-3 px-3 py-2';
+const Text = 'text-xs text-center items-center justify-center w-auto truncate  py-2';
 
 
 const PermitsComponent = () => {
@@ -51,6 +51,10 @@ const PermitsComponent = () => {
         setPermitModal(true)
     }
 
+    const handleViewSummary = () => {
+        router.push('/summary')
+    }
+
     const handleSelectChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         setCompanyPlantId(Number(e.target.value) );
     }
@@ -60,7 +64,7 @@ const PermitsComponent = () => {
             fetchSpecificCompanyPlant(companyPlantId)
         }
 
-        fetchAllPermitByGovernmentAgency(Number(params.name))
+        fetchAllPermitByGovernmentAgency(params.name?.toString()!)
         
         fetchSpecificGovernmentAgency(Number(params.name))
     }, [fetchSpecificGovernmentAgency, fetchSpecificCompanyPlant, companyPlantId, fetchAllPermitByGovernmentAgency])
@@ -73,7 +77,7 @@ const PermitsComponent = () => {
     const rowRender = (data: PermitProps, i: number) => {
         return (
         <>
-            <td className={`${Text} `}>{ companyPlant.find((company) => company.id === data.company_plant)?.name }</td>
+            <td className={`${Text} truncate `}>{ companyPlant.find((company) => company.id === data.company_plant)?.name }</td>
             <td className={`${Text} `}>{data.permit_type}</td>
             <td className={`${Text} `}>{data.frequency}</td>
             <td className={`${Text} `}>{data.in_charge}</td>
@@ -94,26 +98,26 @@ const PermitsComponent = () => {
         <AddPermitModal modalOpen={permitModal} setModalOpen={setPermitModal} />
         <div className='bg-gray-100 p-5'>
             <div className='px-5 w-full'>
-                <div className='text-md flex justify-between'>
+                <div className='text-md w-full flex justify-between'>
                     <div className='text-md flex gap-2  items-center'>
-                        <div className='flex gap-1 text-gray-500'>
+                        <div className=' text-gray-500'>
                             <span>Permits</span>
                         </div>
                             <MdOutlineKeyboardArrowRight className='w-6 h-6' />
-                        <div className='flex gap-1 font-bold'>
+                        <div className=' font-bold'>
                             <span>
                                 {specificGovernmentAgency?.name!}
                             </span>
                         </div>
                     </div>
-                    <div className='flex gap-2 w-full justify-end items-center'>
-                        <div className='w-auto'>
-                            <CommonButton type={'button'} disabled={companyPlantId === 0} onClick={handleAddPermitButton} name="Add Permit Data" />
-                        </div>
-                        <div>
-                            <Select name='company_plant' onChange={handleSelectChange} value={companyPlantId} selection_name={'Select Company Plant'} options={companyList} />
+                    <div className='flex w-auto gap-2 justify-end items-center'>
+                        <div className=''>
+                            <CommonButton type={'button'} onClick={handleAddPermitButton} name="Add Permit Data" />
                         </div>
                     </div>
+                </div>
+                <div className=''>
+                    <CommonButton type={'button'} onClick={handleViewSummary} name="View Summary" />
                 </div>
             </div>
         </div>

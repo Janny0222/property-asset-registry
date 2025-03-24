@@ -14,8 +14,9 @@ import { usePermitStore } from '@/stores/permitStore'
 const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
     const [formData, setFormData] = useState<PermitProps>({})
     const { governmentAgency } = useGovernmentPermitStore()
-    const { specificPermit, fetchAllPermit } = usePermitStore()
+    const { specificPermit, fetchAllPermitByGovernmentAgency } = usePermitStore()
     const { specificCompanyPlant, companyPlant } = useCompanyPlantStore()
+    const [file, setFile] = useState<File | null>(null)
     const params = useParams()
 
     const calculateRenewalDate = (permitDate: string, frequency: string) => {
@@ -59,9 +60,20 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            
+            const formDatas = new FormData();
+            formDatas.append('entityId', formData?.id!.toString());
+            formDatas.append('file', file!);
+
             const response = await updatePermitByID(formData?.id!, formData)
-            fetchAllPermit()
+            
+
+            const response2 = await fetch('/api/uploads', {
+                method: 'POST',
+                body: formDatas,
+            });
+
+            const result = await response2.json();
+            fetchAllPermitByGovernmentAgency(params.name?.toString()!)
             setFormData({})
             setModalOpen(false)
         } catch  (error) {
@@ -75,10 +87,10 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
             setFormData(specificPermit!)
         }
     }, [specificPermit])
-    console.log(formData)
+    
   return (
       <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <div className='inline-block transitions inset-0 sm:w-4/6 border shadow-xl rounded-sm md:w-3/5 lg:w-3/6 w-full align-middle p-5 transform  h-full bg-mainColor'>
+        <div className='inline-block transitions inset-0 sm:w-3/6 border shadow-xl rounded-sm md:w-4/5 lg:w-3/4 w-full align-middle p-3 transform my-5  h-full bg-mainColor'>
               <h2 className='text-2xl font-bold text-white text-left'> Edit Permit </h2>
               <div className='w-full border relative'></div>
             <form onSubmit={handleSubmit} className='grid grid-cols-6 gap-6 text-left mt-6'>
@@ -117,6 +129,12 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
                 </div>
                 <div className='col-span-2 text-white'>
                     <TextArea label='Recomendation' name='recomendation' value={formData?.recomendation || ''} onChange={handleChange} textColor='text-black' placeholder='Recomendation' />
+                  </div>
+                  <div className='col-span-4 flex flex-row'>
+                        
+                </div>
+                <div className='col-span-2 flex flex-row gap-2 text-white'>
+                    <Input label='Attached Files' name={'permit_file'} type='file' onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </div>
                 <span className='text-red-600 font-bold italic'>{''}</span>
                 <div className='col-span-6'>
@@ -125,7 +143,7 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
                         </button>
                 </div>
             </form>
-            <div className='absolute right-4 top-4'>
+            <div className='absolute right-3 top-2'>
                 <button onClick={handleCloseModal} type='button' className=' w-8 h-8 flex-col flex justify-center items-center text-xl transitions  font-extrabold text-black bg-[#91e4bc] border border-border rounded-full hover:bg-dry'>
                     <IoClose />
                 </button>

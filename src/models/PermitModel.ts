@@ -17,6 +17,7 @@ class PermitModel extends Model {
     public renewal!: string;
     public permit_conditions!: string;
     public recomendation!: string;
+    public filename!: string;
     public createdAt!: Date;
     public updatedAt!: Date;
 }
@@ -84,6 +85,10 @@ PermitModel.init({
         allowNull: true
     },
     recomendation: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    filename: {
         type: DataTypes.STRING,
         allowNull: true
     }

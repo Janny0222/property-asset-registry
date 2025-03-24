@@ -7,7 +7,7 @@ interface PermitStore {
     specificPermit: PermitProps | null;
     permitForRenewal: PermitProps[];
     fetchAllPermit: () => void;
-    fetchAllPermitByGovernmentAgency: (government_agency: number) => Promise<void>;
+    fetchAllPermitByGovernmentAgency: (government_agency: string) => Promise<void>;
     fetchPermitByID: (id: number) => Promise<void>
     fetchAllPermitForRenewal: () => void
 }
@@ -24,7 +24,7 @@ export const usePermitStore = create<PermitStore>((set) => ({
             console.error("Error fetching locations:", error);
         }
     },
-    fetchAllPermitByGovernmentAgency: async (government_agency: number) => {
+    fetchAllPermitByGovernmentAgency: async (government_agency: string) => {
         try {
             const permitData = await getAllByGovernmentAgency(government_agency);
             set({ permit: permitData})

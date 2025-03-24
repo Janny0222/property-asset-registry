@@ -87,6 +87,7 @@ const SidebarMenuList = () => {
               </div>
             </Link>
           </div>
+          
         ))}
       </div>
       <div className=' text-white  transitions flex w-full'>

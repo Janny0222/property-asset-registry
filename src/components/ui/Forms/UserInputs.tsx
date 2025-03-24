@@ -40,11 +40,11 @@ export const Select = ({ label, selection_name, name, value, options, onChange }
     return (
         <div className="text-sm flex flex-col w-full">
             <label className="text-sm text-white">{label}</label>
-            <select name={name} value={value} onChange={onChange} className="w-full border border-gray-300 rounded-md p-2">
-                <option>
+            <select name={name} value={value} onChange={onChange} className="w-full text-black truncate border border-gray-300 rounded-md p-2">
+                <option className="truncate">
                    {selection_name}
                 </option>
-                {options && options.map((option, index) => <option key={index} value={option?.value}>{option?.title}</option>)}
+                {options && options.map((option, index) => <option className="truncate" key={index} value={option?.value}>{option?.title}</option>)}
                 
             </select>
         </div>

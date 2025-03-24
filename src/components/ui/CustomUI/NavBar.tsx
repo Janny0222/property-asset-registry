@@ -31,8 +31,8 @@ const NavBar = ({children} : {children: React.ReactNode}) => {
         }
     }
   return (
-    <div className='w-full min-h-screen sticky'>
-          <div className='p-4 flex justify-end bg-gray-200'>
+    <div className='w-full min-h-screen'>
+          <div className='p-4 flex justify-end bg-gray-200 w-auto'>
             
             <Menu as="div" className="inline-block relative text-left">
                 <div>
