@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
         const parseData = await locationScheme.parseAsync(data);
-        console.log(parseData);
         const newLocation = await LocationModel.create({
             name: parseData.name
         })

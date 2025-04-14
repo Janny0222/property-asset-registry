@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, unlink } from "fs/promises";
 import path from 'path'
+import fs from 'fs';
 import { UploadFileModel } from "@/models/UploadFileModel";
 import { PermitModel } from "@/models/PermitModel";
 
@@ -63,7 +64,11 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         const filename = `${file.name}`
-        const filePath = path.join(process.cwd(), 'public/uploads', filename)
+        const filePath = path.join(process.cwd(), `public/uploads/${entityId}`, filename)
+
+        if(!fs.existsSync(path.join(process.cwd(), `public/uploads/${entityId}`))) {
+            fs.mkdirSync(path.join(process.cwd(), `public/uploads/${entityId}`), { recursive: true });
+        }
 
         // const existingFile = await UploadFileModel.findOne({ where: { entityId: Number(entityId) } });
         //     if (existingFile) {

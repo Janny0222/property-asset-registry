@@ -7,7 +7,7 @@ class PropertyModel extends Model {
     public id!: number;
     public propertyNo!: number;
     public location!: number;
-    public company_owner!: string;
+    public company_owner!: string | undefined;
     public address!: string;
     public createdAt!: Date;
     public updatedAt!: Date;

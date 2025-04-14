@@ -20,7 +20,7 @@ const permitTableHead: TableColumn[] = [
     { key: 'permit_no', label: 'Permit No.'},
     { key: 'permit_date', label: 'Permit Date'},
     { key: 'renewal', label: 'Renewal'},
-    { key: 'action', label: 'Actions'},
+    { key: 'file', label: 'PDF File'},
 ]
 const Text = 'text-xs text-center items-center justify-center w-auto truncate  py-2';
 
@@ -71,8 +71,8 @@ const SummaryOfPermits = () => {
                 <td className={`${Text} `}>{data.renewal}</td>
                     <td className={`${Text} flex gap-2`}>
                         {data.filename ? (
-                            <button type='button' onClick={() => window.open(`/uploads/${data.filename}`, '_blank')} className='border rounded-sm text-green-800'><GrFormView className='h-6 w-6' /></button>
-                        ) : ''}
+                            <span onClick={() => window.open(`/uploads/${data.filename}`, '_blank')} className=' text-green-800 underline cursor-pointer font-bold'>View file</span>
+                        ) : <span>No uploaded file</span>}
                 </td>
             </>
             )

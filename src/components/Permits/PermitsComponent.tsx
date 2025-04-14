@@ -123,6 +123,10 @@ const PermitsComponent = () => {
         </div>
         <div className='px-5 mt-5 w-auto'>
             <Table tableHead={permitTableHead} rowData={permit} rowRender={rowRender} bgColor='bg-white' />
+            {permit?.length === 0 &&
+            <>
+            <div className='flex justify-center items-center'><span>No record/s found</span></div>
+            </>}
         </div>
     </>
   )

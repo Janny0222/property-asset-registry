@@ -22,10 +22,12 @@ export const LogoutButton = ({onClick} : ButtonProps) => {
 
 export const CommonButton = ({onClick, name, wFull, type, disabled} : ButtonProps) => {
     return (
-        <form onClick={onClick}>
-            <button type={type} disabled={disabled} className={`transition duration-300 ease-in-out border p-2 ${wFull ? 'w-full' : ''} rounded border-buttonColor bg-mainColor text-lightColor hover:bg-fontColor`}>
-                {name}
-            </button>
-        </form>
+        <div>
+            <form onClick={onClick}>
+                <button type={type} disabled={disabled} className={`transition duration-300 ease-in-out border p-2 ${wFull ? 'w-full' : ''} rounded border-buttonColor bg-mainColor text-lightColor hover:bg-fontColor`}>
+                    {name}
+                </button>
+            </form>
+        </div>
     )
 }

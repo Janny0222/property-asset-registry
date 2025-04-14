@@ -5,7 +5,7 @@ import { z } from "zod";
 const propertyScheme = z.object({
     propertyNo: z.number().min(1),
     location: z.number().min(1),
-    company_owner: z.string().min(4)
+    company_owner: z.string().optional()
 }).transform(async (data) => {
     return {
         propertyNo: data.propertyNo,
@@ -18,7 +18,9 @@ export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
         const parseData = await propertyScheme.parseAsync(data)
-
+        if (!parseData.company_owner) {
+            return NextResponse.json({ error: "Company owner is required" }, { status: 400 });
+       }
         const newProperty = await PropertyModel.create({
             propertyNo: parseData.propertyNo,
             location: parseData.location,

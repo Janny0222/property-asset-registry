@@ -7,8 +7,6 @@ import { TableColumn } from '@/types/propTypes'
 import { usePropertyStore } from '@/stores/propertyStore'
 import { PermitProps, PropertyProps } from '@/types/modelProps'
 import { useLocationStore } from '@/stores/locationStore'
-import { MdModeEdit } from "react-icons/md";
-import { FaTrash } from "react-icons/fa6";
 import { usePermitStore } from '@/stores/permitStore'
 import { useCompanyPlantStore } from '@/stores/companyPlantStore'
 
@@ -16,7 +14,7 @@ export const tableHead: TableColumn[] = [
   { key: 'propertyNo', label: 'Property No.' },
   { key: 'location', label: 'Location' },
   { key: 'company_owner', label: 'Company Owner'},
-  { key: 'actions', label: 'Action'},
+  // { key: 'actions', label: 'Action'},
 ]
 
 const permitTableHead: TableColumn[] = [
@@ -40,9 +38,7 @@ const DashboardComponents = () => {
   const handleClick = () => {
         router.push("/dashboard/add-property");
   }
-  const handleEdit = (id: number) => {
-        router.push(`/dashboard/edit-property/${id}`);
-  }
+  
   useEffect(() => {
     fetchAllPermitForRenewal()
   }, [fetchAllPermitForRenewal])
@@ -52,10 +48,10 @@ const DashboardComponents = () => {
         <td className={`${Text} `}>{ data.propertyNo }</td>
         <td className={`${Text} `}>{ locations.find((location) => location.id === data.location)?.name }</td>
         <td className={`${Text} `}>{data.company_owner}</td>
-        <td className={`${Text} flex gap-2`}>
+        {/* <td className={`${Text} flex gap-2`}>
           <button type='button' onClick={() => handleEdit(data?.id!)} className='p-1 border rounded-sm text-green-800'><MdModeEdit /></button>
           <button className='p-1 border rounded-sm text-red-500'><FaTrash/></button>
-        </td>
+        </td> */}
       </>
     )
   }
@@ -85,7 +81,7 @@ const DashboardComponents = () => {
       
       <div className='mt-7 bg-gray-100 px-3 py-5'>
         <div className='flex justify-end items-end'>
-          <CommonButton type={'button'} onClick={() => handleClick()} name="Add Property" />
+          <CommonButton type={'button'} onClick={() => handleClick()} name="View Property" />
         </div>
         <h1 className='text-3xl font-bold text-center'> List of Property </h1>
         <Table tableHead={tableHead} rowData={property} rowRender={rowRenderProperty} />

@@ -4,7 +4,6 @@ import { CompanyPlantModel } from "@/models/CompanyPlant";
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const companyPlantId = Number(resolvedParams.id);
-  console.log(typeof(companyPlantId))
   if (isNaN(companyPlantId)) {
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
   }

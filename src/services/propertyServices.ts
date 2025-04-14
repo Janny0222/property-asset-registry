@@ -1,13 +1,18 @@
 import axios, { AxiosResponse } from "axios";
 import { PropertyProps } from "@/types/modelProps";
+import { useErrorStore } from "@/stores/errorStore";
 
 export const createProperty = async (propertyData: PropertyProps): Promise<PropertyProps> => {
+    const { setError } = useErrorStore.getState()
     try {
         const response: AxiosResponse<PropertyProps> = await axios.post(`/api/property`, propertyData);
-        return response.data;
+        setError(null)
+        return response.data
     } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
-            const errorMessage = error.response?.data?.message || 'An unexpected error occured!';
+            const errorMessage = error.response?.data?.error || 'An unexpected error occured!';
+            setError(errorMessage)
+            console.error(errorMessage)
             throw new Error(errorMessage)
         } else {
             throw new Error('An unknowd error occured!!!')

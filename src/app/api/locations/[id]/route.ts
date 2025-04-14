@@ -4,7 +4,6 @@ import { LocationModel } from "@/models/LocationModel";
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const propertyId = Number(resolvedParams.id);
-  console.log(typeof(propertyId))
   if (isNaN(propertyId)) {
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
   }

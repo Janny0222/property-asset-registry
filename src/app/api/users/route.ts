@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
         const parseData = await userScheme.parseAsync(data);
-        console.log(parseData);
         if (!parseData.username || !parseData.email || !parseData.password || !parseData.fullName) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
