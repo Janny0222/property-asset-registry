@@ -79,8 +79,8 @@ const SummaryOfPermits = () => {
         }
     return (
     <>     
-        <div className='bg-gray-100 p-5'>
-            <div className='px-5 w-full'>
+        <div className='bg-gray-100  p-5'>
+            <div className='px-5 container mx-auto w-full'>
                 <div className='text-md w-full flex flex-col'>
                     <div className='text-md flex gap-2  items-center'>
                         <div className=' text-gray-500'>
@@ -96,7 +96,7 @@ const SummaryOfPermits = () => {
                 </div>
             </div>
         </div>
-        <div className='container-fluid p-5 mx-auto'>
+        <div className='container p-5 mx-auto'>
             <div className=''>
                 <Table tableHead={permitTableHead} rowData={permit} rowRender={rowRender} />
             </div>

@@ -10,46 +10,60 @@ import { useGovernmentPermitStore } from '@/stores/govenmentAgencyStore'
 import { useCompanyPlantStore } from '@/stores/companyPlantStore'
 import { createPermit, updatePermitByID } from '@/services/permitServices'
 import { usePermitStore } from '@/stores/permitStore'
+import { useFrequencyStore } from '@/stores/frequencyStore'
 
 const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
     const [formData, setFormData] = useState<PermitProps>({})
     const { governmentAgency } = useGovernmentPermitStore()
+    const { fetchAllFrequency, frequency, fetchSpecificFrequency, specificFrequency } = useFrequencyStore()
     const { specificPermit, fetchAllPermitByGovernmentAgency } = usePermitStore()
     const { specificCompanyPlant, companyPlant } = useCompanyPlantStore()
+    const [frequencyId, setFrequencyId] = useState<number>(0)
     const [file, setFile] = useState<File | null>(null)
     const params = useParams()
 
-    const calculateRenewalDate = (permitDate: string, frequency: string) => {
-        if (!permitDate) return '';
-
-        const permitDateObj = new Date(permitDate);
-
-        if (frequency === 'Annual') {
-            permitDateObj.setFullYear(permitDateObj.getFullYear() + 1);
-        } else if (frequency === 'Every 3-years') {
-            permitDateObj.setFullYear(permitDateObj.getFullYear() + 3);
-        } else if (frequency === 'One-Time') {
-            return ''; // No renewal needed
+    useEffect(() => {
+        fetchAllFrequency()
+        if(frequencyId !== 0) {
+            fetchSpecificFrequency(frequencyId)
         }
+    }, [fetchAllFrequency, fetchSpecificFrequency, frequencyId])
 
-        return permitDateObj.toISOString().split('T')[0]; // Format YYYY-MM-DD
+    useEffect(() => {
+        if (specificPermit) {
+            setFormData(specificPermit!)
+        }
+    }, [specificPermit])
+
+    useEffect(() => {
+        if(formData?.permit_date && specificFrequency?.range_in_months) {
+            const newRenewalDate = calculateRenewalDate(formData.permit_date, specificFrequency.range_in_months)
+            setFormData((prev) => (
+                { ...prev, 
+                    renewal: newRenewalDate,
+                }));
+        }
+    }, [formData.permit_date, specificFrequency?.range_in_months])
+    const calculateRenewalDate = (permitDate: string, rangeMonths: number) => {
+        const date = new Date(permitDate);
+        date.setMonth(date.getMonth() + rangeMonths); 
+        return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
     };
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         const updatedFormData = { ...formData, [name]: value };
 
         // If permit_date or frequency changes, recalculate renewal
-        if (name === 'frequency' || name === 'permit_date') {
-            updatedFormData.renewal = calculateRenewalDate(updatedFormData?.permit_date!, updatedFormData?.frequency!);
+        if (name === 'frequency') {
+            formData.frequency = value
+            setFrequencyId(Number(value))
         }
-
         setFormData(updatedFormData);
     };
-    const frequencyOptions: Option[] = [
-        { value: 'Annual', title: 'Annual' },
-        { value: 'One-Time', title: 'One-Time' },
-        { value: 'Every 3-years', title: 'Every 3-years' },
-    ];
+    const frequencyList: Option[] = frequency.map((frequency) => ({
+            value: frequency?.id!,
+            title: frequency?.name_of_frequency!
+        }))
     const handleCloseModal = () => {
         setFormData({});
         setModalOpen(false);
@@ -66,7 +80,7 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
 
             const response = await updatePermitByID(formData?.id!, formData)
             
-
+            
             const response2 = await fetch('/api/uploads', {
                 method: 'POST',
                 body: formDatas,
@@ -82,63 +96,59 @@ const EditPermitModal = ({ modalOpen, setModalOpen, id }: ModalProps) => {
             }
         }
     }
-    useEffect(() => {
-        if (specificPermit) {
-            setFormData(specificPermit!)
-        }
-    }, [specificPermit])
+    
     
   return (
       <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <div className='inline-block transitions inset-0 sm:w-3/6 border shadow-xl rounded-sm md:w-4/5 lg:w-3/4 w-full align-middle p-3 transform my-5  h-full bg-mainColor'>
-              <h2 className='text-2xl font-bold text-white text-left'> Edit Permit </h2>
+        <div className='inline-block transitions inset-0 sm:w-4/6 border rounded-lg md:w-3/5 lg:w-3/6 w-full align-middle p-5 transform  h-full bg-white'>
+              <h2 className='text-2xl font-bold  text-left'> Edit Permit </h2>
               <div className='w-full border relative'></div>
             <form onSubmit={handleSubmit} className='grid grid-cols-6 gap-6 text-left mt-6'>
-                <div className='col-span-2 text-white'>
-                    <Input disabled fontColor='text-white'  value={company_plant || ''} label={'Company Plant'} placeholder="Company Plant" type="text"  onChange={handleChange} />
+                <div className='col-span-2 '>
+                    <Input disabled fontColor=''  value={company_plant || ''} label={'Company Plant'} placeholder="Company Plant" type="text"  onChange={handleChange} />
                 </div>
-                <div className='col-span-2 text-white'>
-                    <Input disabled fontColor='text-white' name='' value={permit || ''} label={'Government Agency'} placeholder="Government Agency" type="text"  onChange={handleChange} />
+                <div className='col-span-2 '>
+                    <Input disabled fontColor='' name='' value={permit || ''} label={'Government Agency'} placeholder="Government Agency" type="text"  onChange={handleChange} />
                 </div>
                 <div className='col-span-2 text-black'>
-                    <Input fontColor='text-white' name='permit_type' value={formData?.permit_type || ''} label={'Type of Permit'} placeholder="Type of Permit" type="text"  onChange={handleChange} />
+                    <Input fontColor='' name='permit_type' value={formData?.permit_type || ''} label={'Type of Permit'} placeholder="Type of Permit" type="text"  onChange={handleChange} />
                 </div>
-                <div className='col-span-2 text-white'>
+                <div className='col-span-2 '>
                       <TextArea label='Requirements' placeholder={`Requirements`}  name='requirement' value={formData?.requirement || ''} textColor='text-black' onChange={handleChange} />
                 </div>
                 <div className='col-span-2 text-black'>
-                    <Input fontColor='text-white' name='in_charge' value={formData?.in_charge || ''} label={'In Charge'} placeholder="In Charge" type="text"  onChange={handleChange} />
+                    <Input fontColor='' name='in_charge' value={formData?.in_charge || ''} label={'In Charge'} placeholder="In Charge" type="text"  onChange={handleChange} />
                  </div>
                 <div className='col-span-2 text-black'>
-                    <Input fontColor='text-white' name='contact_no' value={formData?.contact_no || ''} label={'Contact No.'} placeholder="Contact No." type="text"  onChange={handleChange} />
+                    <Input fontColor='' name='contact_no' value={formData?.contact_no || ''} label={'Contact No.'} placeholder="Contact No." type="text"  onChange={handleChange} />
                 </div>
                 <div className='col-span-2 text-black'>
-                    <InputDate fontColor='text-white' name='permit_date' value={formData?.permit_date! || ''} label={'Permit Date'} placeholder="Permit Date" type="date"  onChange={handleChange} />
+                    <InputDate fontColor='' name='permit_date' value={formData?.permit_date! || ''} label={'Permit Date'} placeholder="Permit Date" type="date"  onChange={handleChange} />
                 </div>
                 <div className='col-span-2'>
-                    <Select label='Frequency' name='frequency' onChange={handleChange} value={formData?.frequency || ''} selection_name={'Select Frequency'} options={frequencyOptions} />
+                    <Select label='Frequency' name='frequency' onChange={handleChange} value={formData?.frequency || ''} selection_name={'Select Frequency'} options={frequencyList} />
                 </div>
-                <div className='col-span-2 text-white'>
-                    <InputDate disabled fontColor='text-white' name='renewal' value={formData?.renewal! || ''} label={'Renewal Date'} placeholder="Renewal Date" type="date"  onChange={handleChange} />
+                <div className='col-span-2 '>
+                    <InputDate disabled fontColor='' name='renewal' value={formData?.renewal! || ''} label={'Renewal Date'} placeholder="Renewal Date" type="date"  onChange={handleChange} />
                 </div>
                 <div className='col-span-2 text-black'>
-                    <Input fontColor='text-white' name='permit_no' value={formData?.permit_no || ''} label={'Permit No.'} placeholder="Permit No." type="text"  onChange={handleChange} />
+                    <Input fontColor='' name='permit_no' value={formData?.permit_no || ''} label={'Permit No.'} placeholder="Permit No." type="text"  onChange={handleChange} />
                 </div>
-                <div className='col-span-2 text-white'>
+                <div className='col-span-2 '>
                       <TextArea label='Permit Conditions' name='permit_conditions' value={formData?.permit_conditions || ''} onChange={handleChange} textColor='text-black' placeholder='Permit Conditions' />
                 </div>
-                <div className='col-span-2 text-white'>
+                <div className='col-span-2 '>
                     <TextArea label='Recomendation' name='recomendation' value={formData?.recomendation || ''} onChange={handleChange} textColor='text-black' placeholder='Recomendation' />
                   </div>
                   <div className='col-span-4 flex flex-row'>
                         
                 </div>
-                <div className='col-span-2 flex flex-row gap-2 text-white'>
+                <div className='col-span-2 flex flex-row gap-2 '>
                     <Input label='Attached Files' name={'permit_file'} type='file' onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </div>
                 <span className='text-red-600 font-bold italic'>{''}</span>
                 <div className='col-span-6'>
-                        <button type='submit' className='w-full flex flex-row justify-center items-center gap-2 py-3 text-lg transitions border-2 border-lightColor hover:bg-lightColor rounded bg-fontColor text-white hover:text-darkColor'>
+                        <button type='submit' className='w-full flex flex-row justify-center items-center gap-2 py-3 text-lg transitions border-2 border-lightColor hover:bg-green-700 rounded bg-fontColor text-white hover:text-darkColor'>
                         <HiCheckCircle className='w-6 h-6 font-bold' />  UPDATE
                         </button>
                 </div>

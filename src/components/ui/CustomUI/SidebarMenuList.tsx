@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { HiWrenchScrewdriver } from 'react-icons/hi2'
+import { FaHistory } from "react-icons/fa";
 import { MdArrowRight, MdSpaceDashboard } from 'react-icons/md'
 import { BsCardChecklist } from "react-icons/bs";
 import { useCompanyPlantStore } from '@/stores/companyPlantStore';
@@ -19,7 +20,6 @@ const SidebarMenuList = () => {
   const { fetchLocations } = useLocationStore()
   const pathname = usePathname(); 
   const dropdownRef = React.useRef<HTMLDivElement>(null);
-  const showRightRef = React.useRef<HTMLDivElement>(null);
   
   const handleClickMaintenance = () => {
     setMaintenanceOpen(!maintenanceOpen);
@@ -29,16 +29,22 @@ const SidebarMenuList = () => {
     setPermitOpen(!permitOpen);
     setMaintenanceOpen(false);
   }
+
   
   useEffect(() => {
-    if(pathname.startsWith('/maintenance')) {
-      setMaintenanceOpen(true);
-      
-    } else if(pathname.startsWith('/permits')) {
-      setPermitOpen(true)
-    } else {
-      setPermitOpen(false)
-      setMaintenanceOpen(false);
+    switch (true) {
+      case pathname.startsWith('/maintenance'):
+        setMaintenanceOpen(true);
+        setPermitOpen(false);
+        break;
+      case pathname.startsWith('/permits'):
+        setPermitOpen(true);
+        setMaintenanceOpen(false);
+        break;
+      default:
+        setPermitOpen(false);
+        setMaintenanceOpen(false);
+        break;
     }
     fetchAllGovernmentAgency()
     fetchAllProperty()
@@ -90,6 +96,7 @@ const SidebarMenuList = () => {
           
         ))}
       </div>
+      
       <div className=' text-white  transitions flex w-full'>
         <button type='button' onClick={handleClickMaintenance} className='hover:bg-fontColor flex justify-between gap-3 w-full p-4 cursor-pointer'>
           <div className='flex gap-3'>
@@ -121,6 +128,11 @@ const SidebarMenuList = () => {
           <Link href={'/maintenance/company-name'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/company-name' ? 'bg-fontColor bg-opacity-50' : ''}`}>
             <div className='w-full ml-8'>
               Company Name
+            </div>
+          </Link>
+          <Link href={'/maintenance/frequency'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/frequency' ? 'bg-fontColor bg-opacity-50' : ''}`}>
+            <div className='w-full ml-8'>
+              Frequency
             </div>
           </Link>
           <Link href={'/maintenance/asset-list'} className={`p-3 transitions hover:bg-fontColor ${pathname === '/maintenance/asset-list' ? 'bg-fontColor bg-opacity-50' : ''}`}>

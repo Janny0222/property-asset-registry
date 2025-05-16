@@ -20,7 +20,7 @@ export const useCompanyPlantStore = create<CompanyPlantState>((set) => ({
             console.error("Error fetching locations:", error);
         }
     },
-    fetchSpecificCompanyPlant: async(id: any) => {
+    fetchSpecificCompanyPlant: async(id: number) => {
         try {
             const propertyData = await getSpecificCompanyPlant(id);
             set({ specificCompanyPlant: propertyData || null })

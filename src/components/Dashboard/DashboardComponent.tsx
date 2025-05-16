@@ -74,7 +74,7 @@ const DashboardComponents = () => {
           )
       }
   return (
-    <div className='p-5 container-fluid mx-auto'>
+    <div className='p-5 container mx-auto'>
       <div className='text-md'>
           <h1 className='text-md flex gap-2 items-center'><IoHome className='w-5 h-5' /> Dashboard </h1>
       </div>

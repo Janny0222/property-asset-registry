@@ -104,7 +104,7 @@ const AddPropertyComponents = () => {
                         <MdOutlineKeyboardArrowRight className='w-6 h-6' />
                         <div className='flex gap-1'>
                             <LuWarehouse className='w-5 h-5' />
-                            <span>Add Property</span>
+                            <span>Property</span>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@ const AddPropertyComponents = () => {
                 <div className='border p-5'>
                     <button
                             onClick={toggleFormVisibility}
-                            className='text-sm font-medium text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transitions'
+                            className='text-sm font-medium text-white bg-fontColor px-4 py-2 rounded hover:bg-green-700 transitions'
                             >
                             {showForm ? 'Hide Form' : 'Add Property'}
                     </button>

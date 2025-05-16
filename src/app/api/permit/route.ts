@@ -3,18 +3,18 @@ import { PermitModel } from "@/models/PermitModel";
 import { z } from "zod";
 
 const permitScheme = z.object({
-    company_plant: z.number().min(1),
-    government_agency: z.number().min(1),
-    permit_type: z.string().min(1),
-    requirement: z.string().min(1),
-    in_charge: z.string().min(1),
-    contact_no: z.string().min(1),
-    permit_date: z.string().min(1),
-    frequency: z.string().min(1),
-    renewal: z.string().min(1),
-    permit_no: z.string().min(1),
-    permit_conditions: z.string().min(1),
-    recomendation: z.string().min(1)
+    company_plant: z.number().min(0),
+    government_agency: z.number().min(0),
+    permit_type: z.string().min(0),
+    requirement: z.string().min(0),
+    in_charge: z.string().min(0),
+    contact_no: z.string().min(0),
+    permit_date: z.string().min(0),
+    frequency: z.string().min(0),
+    renewal: z.string().min(0),
+    permit_no: z.string().min(0),
+    permit_conditions: z.string().min(0),
+    recomendation: z.string().min(0)
 }).transform(async (data) => {
     return {
         company_plant: data.company_plant,

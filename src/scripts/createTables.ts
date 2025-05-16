@@ -6,6 +6,8 @@ import { PropertyModel } from "@/models/PropertyModel";
 import { GovernmentAgencyModel } from "@/models/GovernmentAgencyModel";
 import { CompanyPlantModel } from "@/models/CompanyPlant";
 import { PermitModel } from "@/models/PermitModel";
+import { FrequencyModel } from '@/models/FrequencyModel';
+import { PermitHistoryModel } from '@/models/PermitHistoryModel';
 const createTables = async () => {
     try {
         await syncDatabase();
@@ -16,6 +18,8 @@ const createTables = async () => {
         await CompanyPlantModel.sync({ alter: true });
         await PermitModel.sync({ alter: true });
         await UploadFileModel.sync({ alter: true})
+        await FrequencyModel.sync({ alter: true });
+        await PermitHistoryModel.sync({ alter: true });
         console.log("All models were synchronized successfully.");
         process.exit(0);
     } catch (error: any) {
